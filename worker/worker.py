@@ -16,8 +16,9 @@ def funPrix():
     commune_val = request.json["commune"]
     surface_val = request.json["surface"]
     type_val = request.json["type"]
+    prix_val = calcPrix(region_val,commune_val,type_val,surface_val)
 
-    return jsonify(prix=calcPrix(region_val,commune_val,type_val,surface_val))
+    return jsonify(prix=prix_val)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=9773)

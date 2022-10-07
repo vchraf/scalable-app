@@ -1,5 +1,36 @@
-import requests
-PARAMS = {"region": "Rabat-Salé-Kénitra", "commune": "Skhirate", "surface": "222", "type": "villa"}
-r = requests.post(url = "http://127.0.0.1:9773", json = PARAMS)
-data = r.json()['prix']
-print(data)
+# import psycopg2
+
+# conn = psycopg2.connect(host="localhost", database="regdb", user="admin", password="admin")
+# # conn.autocommit = True
+  
+# # cursor = conn.cursor()
+  
+# # cursor.execute('CREATE database regdb')
+# # print("Database has been created successfully !!");
+# conn.close()
+
+
+# import psycopg2
+
+# conn = psycopg2.connect(host="localhost", database="regdb", user="admin", password="admin")
+# conn.autocommit = True
+  
+# cursor = conn.cursor()
+  
+# cursor.execute('CREATE TABLE requests(ID  SERIAL PRIMARY KEY, hash TEXT NOT NULL, region TEXT NOT NULL, \
+#     commune TEXT NOT NULL, type TEXT NOT NULL, surface REAL NOT NULL, prix REAL NOT NULL, date timestamp NOT NULL DEFAULT NOW())')
+# print("table has been created successfully !!");
+# conn.close()
+
+import psycopg2
+
+conn = psycopg2.connect(host="localhost", database="regdb", user="admin", password="admin")
+conn.autocommit = True
+cursor = conn.cursor()
+
+cursor.execute('''SELECT * from requests''')
+
+#Fetching 1st row from the table
+result = cursor.fetchall();
+print(result)
+conn.close()
