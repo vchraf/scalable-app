@@ -1,6 +1,7 @@
 import pandas as pd
 from flask import Flask, jsonify,request
 app = Flask('worker')
+
 data =  pd.read_csv("./db.csv")
 def calcPrix(region_val,commune_val,type_val,surface_val):
     if type_val == "a":

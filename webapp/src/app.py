@@ -30,9 +30,8 @@ def predict_endpoint():
     result = {
         'prix': val #model.predict(list(_request.values()))
     }
-    cursor.execute(f"INSERT INTO requests(hash, region, commune, type, surface, prix) VALUES ('{key}','{_request['region']}','{_request['commune']}','{_request['type']}',{_request['surface']},{val})")
+    cursor.execute(f'''INSERT INTO requests(hash, region, commune, type, surface, prix) VALUES ('{key}','{_request['region']}','{_request['commune']}','{_request['type']}',{_request['surface']},{val})''')
     conn.commit()
-    print("done!!")
     return jsonify(result)
 
 @app.route("/v", methods =["GET", "POST"])
@@ -43,3 +42,6 @@ def visits():
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=9772)
+
+
+# docker run --name postgresql -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -p 5432:5432 -v /data:/var/lib/postgresql/data -d postgres
