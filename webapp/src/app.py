@@ -37,7 +37,7 @@ def predict_endpoint():
         val = r.get(key)
     else:
         _request['hash'] = key
-        val = requests.post(url = worker_adress, json = _request).json()['prix']
+        val = requests.post(url = "http://"+str(worker_adress)+":9773", json = _request).json()['prix']
         r.set(key, val)
     result = {
         'prix': val #model.predict(list(_request.values()))
