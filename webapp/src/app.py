@@ -1,3 +1,5 @@
+import os
+
 import redis
 import hashlib
 import json
@@ -7,13 +9,23 @@ from flask import Flask, jsonify,request
 
 app = Flask('webapp')
 
-redis_host = "localhost"
-redis_port = 6379
+redis_host = os.getenv('REDIS_HOST')#"localhost"
+redis_port = os.getenv('REDIS_PORT')
 redis_password = ""
 
-conn = psycopg2.connect(host="localhost", database="regdb", user="admin", password="admin")
+postgres_host = os.getenv('PG_HOST')
+postgres_db = os.getenv('PG_DB')
+postgres_user = os.getenv('PG_USER')
+postgres_password = os.getenv('PG_PASSWORD')
+
+worker_adress = os.getenv('WORKER_ADRESS')
+
+conn = psycopg2.connect(host=postgres_host, database=postgres_db, user=postgres_user, password=postgres_password)
 conn.autocommit = True
 cursor = conn.cursor()
+cursor.execute('CREATE TABLE IF NOT EXISTS requests(ID  SERIAL PRIMARY KEY, hash TEXT NOT NULL, region TEXT NOT NULL, \
+    commune TEXT NOT NULL, type TEXT NOT NULL, surface REAL NOT NULL, prix REAL NOT NULL, date timestamp NOT NULL DEFAULT NOW())')
+conn.commit()
 
 r = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_password, decode_responses=True)   
 
@@ -25,7 +37,7 @@ def predict_endpoint():
         val = r.get(key)
     else:
         _request['hash'] = key
-        val = requests.post(url = "http://127.0.0.1:9773", json = _request).json()['prix']
+        val = requests.post(url = worker_adress, json = _request).json()['prix']
         r.set(key, val)
     result = {
         'prix': val #model.predict(list(_request.values()))

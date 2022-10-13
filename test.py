@@ -17,7 +17,7 @@
   
 # cursor = conn.cursor()
   
-# cursor.execute('CREATE TABLE requests(ID  SERIAL PRIMARY KEY, hash TEXT NOT NULL, region TEXT NOT NULL, \
+# cursor.execute('CREATE TABLE IF NOT EXISTS requests(ID  SERIAL PRIMARY KEY, hash TEXT NOT NULL, region TEXT NOT NULL, \
 #     commune TEXT NOT NULL, type TEXT NOT NULL, surface REAL NOT NULL, prix REAL NOT NULL, date timestamp NOT NULL DEFAULT NOW())')
 # print("table has been created successfully !!");
 # conn.close()
